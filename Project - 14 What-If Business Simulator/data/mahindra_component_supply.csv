@@ -1,0 +1,8 @@
+component_category,tier1_supplier,current_buffer_days,min_safe_buffer_days,lead_time_weeks,max_supplier_capacity_surge_pct,cost_per_vehicle_inr,bottleneck_criticality,risk_description
+Semiconductor ECUs & Microcontrollers,Bosch India / Continental,18,35,16,12.0,48500,EXTREME,Global fab allocation constraints; 20% auto surge requires 14-week advance reservation.
+Ultra-High Strength Steel (UHSS) Body Panels,JSW Steel / Tata Steel,26,30,6,25.0,112000,MEDIUM,Domestic stamping presses at 88% capacity. Stamping tooling calibration needed for Thar/XUV700.
+Lithium Iron Phosphate (LFP) Battery Packs & Cells,Farasis / LG Chem (Imported),21,40,12,15.0,380000,HIGH,Customs clearance & sea transit through Nhava Sheva port subject to container dwell delays.
+Automatic Transmissions & Transfer Cases,Aisin / DSI / Mahindra Powertrain,22,28,8,18.0,135000,HIGH,Torque converter matching precision machining bottlenecks for 4WD Thar & Scorpio-N.
+Wiring Harnesses & Modular Electrics,Motherson Sumi Systems Ltd (MSSL),15,25,4,20.0,28500,MEDIUM,Labor intensive assembly in Pune/Noida; rapid scalable if overtime approved.
+"Castings, Crankshafts & Engine Blocks",Bharat Forge / Mahindra Foundry,28,30,5,30.0,64000,LOW,In-house casting facilities have 25% surplus headroom at Zaheerabad & Igatpuri.
+Automotive Car Carriers & Railway Rakes,TCI Supply Chain / IVC / Indian Railways (AFTO),3,7,3,8.0,24000,CRITICAL,Severe national shortage of 8-car trailer carriers. Over +10% surge induces yard gridlock.

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mahindra & Mahindra - What-If Business Simulator (Project 14)</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <!-- Chart.js CDN for interactive browser visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Header Bar -->
+  <header class="header-bar">
+    <div class="header-container">
+      <div class="brand-wrapper">
+        <div class="brand-logo-badge">M&M</div>
+        <div class="brand-titles">
+          <h1>What-If Business Simulator <span class="badge-danger" style="font-size: 0.65rem; padding: 2px 6px;">PROJECT - 14</span></h1>
+          <p>Mahindra & Mahindra Ltd. — Automotive Cross-Functional Decision Intelligence Engine</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="status-pill">
+          <span class="pulse-dot"></span>
+          <span>Simulation Engine Active : Port 5014</span>
+        </div>
+        <a href="/download-report" class="btn-primary" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download PDF Report
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="main-wrapper">
+    <!-- Problem Statement Banner -->
+    <section class="problem-banner">
+      <div class="problem-banner-text">
+        <h2>Executive Problem Statement</h2>
+        <p>"Mahindra & Mahindra Management wants to increase sales by 20% but does not know whether existing employees, inventory, production capacity and logistics can support the additional demand. Build an AI scenario-analysis system that simulates business consequences of different strategic decisions."</p>
+      </div>
+      <div class="banner-stats">
+        <div class="b-stat">
+          <div class="b-stat-num">500,000</div>
+          <div class="b-stat-lbl">Baseline Units</div>
+        </div>
+        <div class="b-stat">
+          <div class="b-stat-num" style="color: #F87171;">600,000</div>
+          <div class="b-stat-lbl">Target Units (+20%)</div>
+        </div>
+        <div class="b-stat">
+          <div class="b-stat-num" style="color: #34D399;">₹87,000 Cr</div>
+          <div class="b-stat-lbl">Revenue Target</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Executive KPI Bar -->
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="kpi-label">Target Fulfillment</span>
+          <span id="kpi-fulfill-badge" class="kpi-badge badge-danger">CHOKE RISK</span>
+        </div>
+        <div id="kpi-fulfill-val" class="kpi-value">72.2%</div>
+        <div id="kpi-fulfill-sub" class="kpi-sub">433,090 / 600,000 Units</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="kpi-label">Primary Constraint</span>
+          <span class="kpi-badge badge-warning">BOTTLENECK</span>
+        </div>
+        <div id="kpi-bottleneck-val" class="kpi-value" style="font-size: 1.05rem; line-height: 1.4; color: #FCA5A5;">Workforce & Labor</div>
+        <div id="kpi-bottleneck-sub" class="kpi-sub">Deficit: 166,910 units</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="kpi-label">Realized Revenue</span>
+          <span class="kpi-badge badge-info">ANNUAL</span>
+        </div>
+        <div id="kpi-revenue-val" class="kpi-value">₹62,798 Cr</div>
+        <div id="kpi-lost-rev-sub" class="kpi-sub" style="color: #F87171;">Lost Opp.: ₹24,202 Cr</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="kpi-label">Operating EBITDA</span>
+          <span id="kpi-ebitda-badge" class="kpi-badge badge-success">MARGIN</span>
+        </div>
+        <div id="kpi-ebitda-val" class="kpi-value">₹9,139 Cr</div>
+        <div id="kpi-ebitda-sub" class="kpi-sub">Margin: 14.55% (Incremental: -₹866 Cr)</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="kpi-label">Factories Act 1948</span>
+          <span id="kpi-compliance-badge" class="kpi-badge badge-danger">VIOLATION</span>
+        </div>
+        <div id="kpi-ot-val" class="kpi-value" style="font-size: 1.25rem;">110.0 hrs/qtr</div>
+        <div id="kpi-ot-sub" class="kpi-sub">Legal Limit: 50.0 hrs/qtr max</div>
+      </div>
+    </section>
+
+    <!-- Interactive Workspace Grid: Controls + Visuals -->
+    <div class="workspace-grid">
+      <!-- Left: Interactive Decision Levers Panel -->
+      <aside class="panel">
+        <div class="panel-header">
+          <h3>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Strategic Decision Controls
+          </h3>
+          <span id="overall-status-badge" class="kpi-badge badge-danger">RISK: 23/100</span>
+        </div>
+
+        <div class="preset-buttons">
+          <button id="btn-preset-naive" class="preset-btn active">Naive Status Quo</button>
+          <button id="btn-preset-sweat" class="preset-btn">Asset Sweating</button>
+          <button id="btn-preset-agile" class="preset-btn">Scenario E (Agile)</button>
+        </div>
+
+        <!-- Lever 1: Demand Target -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">Target Sales Growth Surge</span>
+            <span id="val-growth" class="control-val-readout">+20.0%</span>
+          </div>
+          <input type="range" id="slider-growth" class="slider-input" min="0" max="40" step="1" value="20">
+        </div>
+
+        <!-- Lever 2: Plant Shift Model -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">Manufacturing Shift Strategy</span>
+          </div>
+          <select id="select-shift" class="select-input">
+            <option value="2_shifts">2 Shifts Baseline (16 hrs/day)</option>
+            <option value="2_shifts_max_ot">2 Shifts + Forced Overtime</option>
+            <option value="3_shifts">3 Shifts 24/7 Operations (+25% Plant Time)</option>
+            <option value="hybrid_agile" selected>Hybrid Agile (3 Shifts + Automated Cells)</option>
+          </select>
+        </div>
+
+        <!-- Lever 3: Workforce Hiring -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">Assembly Workforce Recruitment</span>
+            <span id="val-hiring" class="control-val-readout">+4,200</span>
+          </div>
+          <input type="range" id="slider-hiring" class="slider-input" min="0" max="6000" step="200" value="4200">
+        </div>
+
+        <!-- Lever 4: Plant Debottlenecking CAPEX -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">Tooling & Automation CAPEX</span>
+            <span id="val-capex" class="control-val-readout">₹320 Cr</span>
+          </div>
+          <input type="range" id="slider-capex" class="slider-input" min="0" max="600" step="20" value="320">
+        </div>
+
+        <!-- Lever 5: Inventory Target Buffer -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">Component Buffer Target (DOI)</span>
+            <span id="val-doi" class="control-val-readout">38 Days</span>
+          </div>
+          <input type="range" id="slider-doi" class="slider-input" min="15" max="50" step="1" value="38">
+        </div>
+
+        <!-- Lever 6: Supplier Advance PO Notice -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">Tier-1 Advance PO Lead Time</span>
+            <span id="val-leadtime" class="control-val-readout">14 Weeks</span>
+          </div>
+          <input type="range" id="slider-leadtime" class="slider-input" min="2" max="16" step="1" value="14">
+        </div>
+
+        <!-- Lever 7: Logistics Rail Share -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">Indian Railways AFTO Rake Share</span>
+            <span id="val-rail" class="control-val-readout">30.0%</span>
+          </div>
+          <input type="range" id="slider-rail" class="slider-input" min="10" max="50" step="2" value="30">
+        </div>
+
+        <!-- Lever 8: Carrier Contract Lock -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">Car Carrier Contract Lock-in</span>
+            <span id="val-carrier" class="control-val-readout">90%</span>
+          </div>
+          <input type="range" id="slider-carrier" class="slider-input" min="40" max="100" step="5" value="90">
+        </div>
+
+        <button id="btn-recalculate" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+          Run Real-Time Simulation
+        </button>
+      </aside>
+
+      <!-- Right: Cross-Functional Results & Multi-Tab Analysis -->
+      <section class="panel">
+        <!-- 4-Pillars Health Cards -->
+        <div class="panel-header">
+          <h3>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Operational Feasibility Integrity (4 Pillars)
+          </h3>
+          <span style="font-size: 0.76rem; color: var(--text-muted);">Real-time constraint propagation</span>
+        </div>
+
+        <div class="pillars-grid">
+          <!-- Pillar 1: Workforce -->
+          <div class="pillar-card">
+            <div class="pillar-header">
+              <span class="pillar-title">1. Employees & Workforce</span>
+              <span id="p-score-workforce" class="pillar-score-badge badge-danger">24/100</span>
+            </div>
+            <div class="progress-track">
+              <div id="p-fill-workforce" class="progress-fill" style="width: 24%; background: #EF4444;"></div>
+            </div>
+            <table class="pillar-metrics-table">
+              <tr><td>Active Technicians</td><td id="m-wf-headcount">27,200</td></tr>
+              <tr><td>Quarterly Overtime</td><td id="m-wf-ot">14.2 hrs/qtr</td></tr>
+              <tr><td>Absenteeism / Scrap</td><td id="m-wf-absent">6.2% / 1.7%</td></tr>
+              <tr><td>Factories Act Compliance</td><td id="m-wf-factories">COMPLIANT</td></tr>
+            </table>
+          </div>
+
+          <!-- Pillar 2: Production Capacity -->
+          <div class="pillar-card">
+            <div class="pillar-header">
+              <span class="pillar-title">2. Production & Plant Capacity</span>
+              <span id="p-score-plant" class="pillar-score-badge badge-success">92/100</span>
+            </div>
+            <div class="progress-track">
+              <div id="p-fill-plant" class="progress-fill" style="width: 92%; background: #10B981;"></div>
+            </div>
+            <table class="pillar-metrics-table">
+              <tr><td>Effective Nameplate</td><td id="m-plant-cap">665,600 units</td></tr>
+              <tr><td>Capacity Utilization</td><td id="m-plant-util">89.8%</td></tr>
+              <tr><td>Operating OEE</td><td id="m-plant-oee">88.0%</td></tr>
+              <tr><td>Tooling Debottlenecking</td><td id="m-plant-capex">₹320 Cr Invested</td></tr>
+            </table>
+          </div>
+
+          <!-- Pillar 3: Inventory & Supply -->
+          <div class="pillar-card">
+            <div class="pillar-header">
+              <span class="pillar-title">3. Inventory & Tier-1 Supply</span>
+              <span id="p-score-inventory" class="pillar-score-badge badge-success">95/100</span>
+            </div>
+            <div class="progress-track">
+              <div id="p-fill-inventory" class="progress-fill" style="width: 95%; background: #10B981;"></div>
+            </div>
+            <table class="pillar-metrics-table">
+              <tr><td>Days of Inventory (DOI)</td><td id="m-inv-doi">38.0 Days</td></tr>
+              <tr><td>Stockout Disruption Risk</td><td id="m-inv-risk">3.8% (Mitigated)</td></tr>
+              <tr><td>Supplier Pre-Notice</td><td id="m-inv-lead">14 Weeks</td></tr>
+              <tr><td>Working Capital Buffer</td><td id="m-inv-wc">₹2,342 Cr</td></tr>
+            </table>
+          </div>
+
+          <!-- Pillar 4: Logistics & Fleet -->
+          <div class="pillar-card">
+            <div class="pillar-header">
+              <span class="pillar-title">4. Logistics & Distribution</span>
+              <span id="p-score-logistics" class="pillar-score-badge badge-success">88/100</span>
+            </div>
+            <div class="progress-track">
+              <div id="p-fill-logistics" class="progress-fill" style="width: 88%; background: #10B981;"></div>
+            </div>
+            <table class="pillar-metrics-table">
+              <tr><td>Plant Yard Dwell Time</td><td id="m-log-dwell">2.2 Days</td></tr>
+              <tr><td>Yard Saturation Level</td><td id="m-log-sat">68.2%</td></tr>
+              <tr><td>Indian Railways Rakes</td><td id="m-log-rail">30.0% Share</td></tr>
+              <tr><td>Contracted Carrier Lock</td><td id="m-log-carrier">90% Dedicated</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="tabs-nav">
+          <button class="tab-btn active" data-tab="tab-scenarios">Strategic Scenarios (A to E)</button>
+          <button class="tab-btn" data-tab="tab-montecarlo">Monte Carlo 1,000 Risk Runs</button>
+          <button class="tab-btn" data-tab="tab-advisor">AI Business Analyst Terminal</button>
+          <button class="tab-btn" data-tab="tab-roadmap">180-Day Execution Roadmap</button>
+        </nav>
+
+        <!-- Tab 1: Scenarios Matrix -->
+        <div id="tab-scenarios" class="tab-content active">
+          <div style="overflow-x: auto;">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Strategic Scenario</th>
+                  <th>Shift Strategy</th>
+                  <th>Fulfilled Units</th>
+                  <th>Fulfillment %</th>
+                  <th>Realized Rev</th>
+                  <th>EBITDA (Margin %)</th>
+                  <th>Primary Constraint</th>
+                  <th>Score</th>
+                </tr>
+              </thead>
+              <tbody id="scenarios-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 2: Monte Carlo -->
+        <div id="tab-montecarlo" class="tab-content">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
+            <div>
+              <h4 style="font-size: 0.9rem; color: #fff;">1,000 Stochastic Iterations (Supply Shock Distribution)</h4>
+              <p style="font-size: 0.74rem; color: var(--text-muted);">Simulates semiconductor delays, weather/logistics shocks, and labor absenteeism spikes.</p>
+            </div>
+            <button id="btn-run-mc" class="btn-outline" style="font-size: 0.75rem;">Re-run 1,000 Trials</button>
+          </div>
+          <div style="height: 240px; margin-bottom: 1rem;">
+            <canvas id="monteCarloChart"></canvas>
+          </div>
+          <div class="ai-kpis-grid">
+            <div class="ai-kpi-item">
+              <div class="ai-kpi-lbl">P10 (Pessimistic)</div>
+              <div id="mc-p10" class="ai-kpi-val">596,472 Units</div>
+            </div>
+            <div class="ai-kpi-item">
+              <div class="ai-kpi-lbl">P50 (Median Expected)</div>
+              <div id="mc-p50" class="ai-kpi-val">597,648 Units</div>
+            </div>
+            <div class="ai-kpi-item">
+              <div class="ai-kpi-lbl">Success Prob (≥95%)</div>
+              <div id="mc-prob" class="ai-kpi-val" style="color: #34D399;">100.0%</div>
+            </div>
+            <div class="ai-kpi-item">
+              <div class="ai-kpi-lbl">Value at Risk (VaR 95%)</div>
+              <div id="mc-var" class="ai-kpi-val" style="color: #F87171;">₹973.5 Cr</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: AI Advisor Terminal -->
+        <div id="tab-advisor" class="tab-content">
+          <div class="ai-terminal-container">
+            <div class="ai-chips-wrapper">
+              <button class="ai-chip" data-q="Can existing employees support the 20% demand?">Can existing employees support 20% demand?</button>
+              <button class="ai-chip" data-q="Why does naive expansion violate the Factories Act 1948?">Why does naive push violate Factories Act 1948?</button>
+              <button class="ai-chip" data-q="What happens to factory yard logistics at 600k units?">What happens to yard logistics at 600k units?</button>
+              <button class="ai-chip" data-q="What is the recommended capital investment and payback?">What is the recommended CAPEX & payback?</button>
+              <button class="ai-chip" data-q="How does the semiconductor buffer eliminate stockout risk?">How does semiconductor buffer prevent stockouts?</button>
+            </div>
+            <div class="ai-input-row">
+              <input type="text" id="ai-query-input" class="ai-input" placeholder="Ask AI Business Analyst about bottlenecks, labor hours, P&L consequences, or supply chain buffers...">
+              <button id="btn-submit-ai" class="btn-primary">Query AI</button>
+            </div>
+            <div id="ai-response-box" class="ai-response-card">
+              <div id="ai-resp-category" class="ai-response-header">Workforce & Labor Compliance</div>
+              <div id="ai-resp-title" class="ai-response-title">Workforce Status: COMPLIANT (OT: 14.2 hrs/qtr)</div>
+              <div id="ai-resp-body" class="ai-response-body">Under current parameters, total workforce is 27,200 technicians. With Shift 3 active and +4,200 technicians onboarded, quarterly overtime is contained to 14.2 hours per worker, ensuring full compliance with Section 64 of the Indian Factories Act 1948. Absenteeism is stabilized at 6.2% and scrap defect rates remain at standard 1.7%.</div>
+              <div id="ai-resp-kpis" class="ai-kpis-grid">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4: 180-Day Roadmap -->
+        <div id="tab-roadmap" class="tab-content">
+          <div class="roadmap-grid">
+            <div class="roadmap-card">
+              <div class="roadmap-phase">Phase 1: Days 1 - 30</div>
+              <div class="roadmap-title">Contractual Locks & Regulatory Filing</div>
+              <ul class="roadmap-list">
+                <li>Issue 14-week firm purchase orders to Tier-1 suppliers (Bosch, Continental, JSW Steel) for microcontrollers and stampings.</li>
+                <li>Sign multi-modal freight agreement with Indian Railways (AFTO) securing 28 monthly dedicated auto-rakes.</li>
+                <li>Initiate recruitment drive for 4,200 assembly operators across Chakan and Nashik industrial zones.</li>
+                <li>Submit 3rd shift operational notices to State DISH ensuring statutory Factories Act 1948 compliance.</li>
+              </ul>
+            </div>
+
+            <div class="roadmap-card">
+              <div class="roadmap-phase">Phase 2: Days 31 - 90</div>
+              <div class="roadmap-title">Workforce Onboarding & Plant Tooling</div>
+              <ul class="roadmap-list">
+                <li>Complete 4-week vocational assembly training and robotic cell safety certification for 2,500 new technicians.</li>
+                <li>Deploy ₹320 Cr debottlenecking CAPEX: install automated robotic spot-welding stations and reduce takt time to 58s.</li>
+                <li>Establish 3 strategic regional vehicle holding yards (Nagpur, NCR, Bengaluru) to prevent factory yard gridlock.</li>
+                <li>Build up 38-day safety buffer for critical microcontrollers and battery cells.</li>
+              </ul>
+            </div>
+
+            <div class="roadmap-card">
+              <div class="roadmap-phase">Phase 3: Days 91 - 180</div>
+              <div class="roadmap-title">Full 3-Shift Commercial Scaling</div>
+              <ul class="roadmap-list">
+                <li>Activate 24/7 3-shift production schedule across Scorpio-N, XUV700, and Thar lines.</li>
+                <li>Scale rail dispatch to 30% of total outbound vehicle movement, stabilizing road carrier freight costs.</li>
+                <li>Achieve 50,000 monthly vehicle run-rate (600,000 annualized) with zero Factories Act overtime violations.</li>
+                <li>Realize full annual EBITDA accretion of +₹6,958 Cr with 99.6% customer order fulfillment.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
+
